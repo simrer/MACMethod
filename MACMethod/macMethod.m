@@ -117,7 +117,7 @@ function [xmin,fmin,y,out] = macMethod(tfun,nvars,LB,UB,U_0,u_0,alpha_0,N,delta,
     % and emperical covariance matrix.
 
         if all (p >= LB) && all(p <= UB) % if pi is in K (domain of the objective function)  
-           weight1 = weightFcnOfGamma(gamma_0, tfun(p')); % weight/penality
+           weight1 = weightFcnOfGamma(gamma_0, tfun(transpose(p))); % weight/penality
         else
             weight1 = 0;
         end
@@ -133,7 +133,7 @@ function [xmin,fmin,y,out] = macMethod(tfun,nvars,LB,UB,U_0,u_0,alpha_0,N,delta,
           U_n = U_0;
       else
         u_n = weight1*p/2*sum1; % Emperical expected value
-        weightedCovMatrix = (weight1*(p - u_n)*(p - u_n)')/2*sum1;
+        weightedCovMatrix = (weight1*(p - u_n)*transpose(p - u_n))/2*sum1;
         numeratorCovSum = numeratorCovSum + weightedCovMatrix;  
         U_n = sqrt(numeratorCovSum); % Emperical covariance matrix
      end
@@ -192,7 +192,7 @@ while n < MaxIter && (norm(u_n - u_0) >= delta)% || norm(U_n-U_0) >= delta)
 
     for kk = s_p:size(p,2)
         if all (p(:,kk) >= LB) && all(p(:,kk) <= UB) % if pi is in K  
-           weight1(kk) = weightFcnOfGamma(gamma_0, tfun(p(:,kk)'));
+           weight1(kk) = weightFcnOfGamma(gamma_0, tfun(transpose(p(:,kk))));
            WeightedP(:,kk) = weight1(kk)*p(:,kk);
         else
             weight1(kk) = 0;
@@ -221,7 +221,7 @@ while n < MaxIter && (norm(u_n - u_0) >= delta)% || norm(U_n-U_0) >= delta)
 
     if sum1 ~= 0
        for ii = s_p: size(p,2) %alpha_nN
-          weightedCovMatrix = (weight1(ii)*(p(:,ii) - u_n)*(p(:,ii) - u_n)')/sum1;
+          weightedCovMatrix = (weight1(ii)*(p(:,ii) - u_n)*transpose(p(:,ii) - u_n))/sum1;
           numeratorCovSum = numeratorCovSum + weightedCovMatrix;
        end 
     end
