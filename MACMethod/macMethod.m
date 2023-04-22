@@ -187,20 +187,20 @@ while n < MaxIter && (norm(u_n - u_0) >= delta)% || norm(U_n-U_0) >= delta)
         zeta(:,s_p:alpha_nN) = (0.5-1./(1+exp(-zeta(:,s_p:alpha_nN))))/min(std(zeta(s_p:alpha_nN)));
        
     for ii = s_p:alpha_nN
-        p(:,ii) = u_0 + U_0*zeta(:,ii);
+        p(:,ii) = u_0 + U_0*zeta(:,ii);%
     end
 
     for kk = s_p:size(p,2)
         if all (p(:,kk) >= LB) && all(p(:,kk) <= UB) % if pi is in K  
            weight1(kk) = weightFcnOfGamma(gamma_0, tfun(transpose(p(:,kk))));
-           WeightedP(:,kk) = weight1(kk)*p(:,kk);
+           WeightedP(:,kk) = weight1(kk)*p(:,kk);%
         else
             weight1(kk) = 0;
         end
 
         if weight1(kk) ~= 0 && (weight1(kk) > 1 || weight1(kk) < 1e-9)
             weight1(kk) = rand;
-            WeightedP(:,kk) = weight1(kk)*p(:,kk);
+            WeightedP(:,kk) = weight1(kk)*p(:,kk);%
         end     
     end
 
